@@ -1,2 +1,2 @@
-[text](RE58C2_defconfig-orig-vsnew) comparision between booting and Yes defconfig
-[text](things_done<******---) list of files that should be y but are m and the two issues found on building and relative commit trying to fix + boom of ld.lld: error: duplicate symbol
+[RE58C2_defconfig-orig-vsnew](RE58C2_defconfig-orig-vsnew) comparision between booting and Yes defconfig
+[things_done<******---](things_done<******---) list of files that should be y but are m and the two issues found on building and relative commit trying to fix + boom of ld.lld: error: duplicate symbol
