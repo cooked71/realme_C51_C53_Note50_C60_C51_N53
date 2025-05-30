@@ -236,8 +236,9 @@ void io_check_hung_detection(struct task_struct *t, unsigned long timeout, unsig
 	if (t->state == TASK_UNINTERRUPTIBLE || t->state == TASK_STOPPED || t->state == TASK_TRACED)
 		/* Check for selective monitoring */
 	/*  	if (!sysctl_hung_task_selective_monitoring ||
-			t->hang_detection_enabled)
-			oplus_check_hung_task(t, timeout, iowait_count, show_lock, call_panic); === help needed */
+			t->hang_detection_enabled)=== help needed */
+			oplus_check_hung_task(t, timeout, iowait_count, show_lock, call_panic); 
+
 #endif
 	return;
 }
