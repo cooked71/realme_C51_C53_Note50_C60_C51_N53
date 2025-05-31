@@ -309,7 +309,7 @@ struct qos_capab_info *qos_parse_capab_info(void *buf, int buflen, uint key)
 	return NULL;
 }
 #endif
-unsigned int qos_match_q(void *skb, int data_offset)
+unsigned int qos_match_q_marl(void *skb, int data_offset)
 {
 	int priority;
 	struct ether_header *eh;
@@ -584,7 +584,7 @@ void reset_wmmac_ts_info(void)
 		remove_wmmac_ts_info(tsid);
 }
 
-unsigned int priority_map_to_qos_index(int priority)
+unsigned int priority_map_to_qos_index_marl(int priority)
 {
 	qos_head_type_t qos_index = SPRDWL_AC_BE;
 
@@ -787,7 +787,7 @@ unsigned int change_priority_if(struct sprdwl_priv *priv, unsigned char *tid, un
 	return qos_index;
 }
 
-const u8 *get_wmm_ie(u8 *res, u16 ie_len, u8 ie, uint oui, uint oui_type)
+const u8 *get_wmm_ie_marl(u8 *res, u16 ie_len, u8 ie, uint oui, uint oui_type)
 {
 	const u8 *end, *pos;
 

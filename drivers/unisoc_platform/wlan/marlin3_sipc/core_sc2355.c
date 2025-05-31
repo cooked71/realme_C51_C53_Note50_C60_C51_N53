@@ -287,7 +287,7 @@ void adjust_tcpack_time_in_ms(char *buf, unsigned char offset)
 #undef MAX_LEN
 }
 
-void adjust_max_fw_tx_dscr(char *buf, unsigned char offset)
+void adjust_max_fw_tx_dscr_marl(char *buf, unsigned char offset)
 {
 	unsigned int value = 0;
 	unsigned int i = 0;
@@ -354,7 +354,7 @@ struct debuginfo_s {
 	{adjust_tsq_shift, "tsq_shift="},
 	{adjust_tcpack_th_in_mb, "tcpack_delay_th_in_mb="},
 	{adjust_tcpack_time_in_ms, "tcpack_time_in_ms="},
-	{adjust_max_fw_tx_dscr, "max_fw_tx_dscr="},
+	{adjust_max_fw_tx_dscr_marl, "max_fw_tx_dscr="},
 #ifdef SIPC_SUPPORT
     {sipc_txrx_debug, "sipc_txrx_dbg="},
 #endif

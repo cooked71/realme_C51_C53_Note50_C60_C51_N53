@@ -1022,11 +1022,11 @@ unsigned int  get_project(void)
 }
 EXPORT_SYMBOL(get_project);
 
-int register_device_proc(char *name, char *version, char *vendor)
+int register_device_proc_oplus(char *name, char *version, char *vendor)
 {
 	return 1;
 }
-EXPORT_SYMBOL(register_device_proc);
+EXPORT_SYMBOL(register_device_proc_oplus);
 
 int get_charger_ic_det(struct oplus_chg_chip *chip)
 {

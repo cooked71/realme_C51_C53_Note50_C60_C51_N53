@@ -1366,9 +1366,9 @@ BOOL ECDSA_verify(const signature_t *sig, const uint8_t *hash_data, const eccpoi
 }
 
 /********************************************************************
- * Function Name: sha256_compress
- * Description:   Perform sha256 compression function
- *                [in,out] context pointer to sha256 context
+ * Function Name: sha256_optiga_compress
+ * Description:   Perform sha256_optiga compression function
+ *                [in,out] context pointer to sha256_optiga context
  ********************************************************************/
 void sha256_compress(sha256_context_t *context) 
 {
@@ -1511,7 +1511,7 @@ void sha256_init(sha256_context_t *context)
  *                [in] input_data pointer to data to hash
  *                [in] input_length byte length of hash data
  ********************************************************************/
-void sha256(uint8_t *hash_value, const uint8_t *input_data, const uint32_t input_length)
+void sha256_optiga(uint8_t *hash_value, const uint8_t *input_data, const uint32_t input_length)
 {
 	sha256_context_t ctx;
 

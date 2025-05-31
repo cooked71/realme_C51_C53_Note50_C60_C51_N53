@@ -1233,7 +1233,7 @@ void clean_scan_list(struct sprdwl_vif *vif)
 }
 
 #ifdef ACS_SUPPORT
-void clean_survey_info_list(struct sprdwl_vif *vif)
+void clean_survey_info_list_marl(struct sprdwl_vif *vif)
 {
 	struct sprdwl_bssid *bssid = NULL, *pos_bssid = NULL;
 	struct sprdwl_survey_info *info = NULL, *pos_info = NULL;
@@ -1282,7 +1282,7 @@ static unsigned short cal_total_beacon(struct sprdwl_vif *vif,
 }
 
 /* Transfer beacons to survey info */
-void transfer_survey_info(struct sprdwl_vif *vif)
+void transfer_survey_info_marl(struct sprdwl_vif *vif)
 {
 	struct ieee80211_channel *channel = NULL;
 	struct wiphy *wiphy = vif->wdev.wiphy;
@@ -1745,6 +1745,6 @@ void sprdwl_notify_deinit(struct sprdwl_priv *priv)
 		unregister_inet6addr_notifier(&sprdwl_inet6addr_cb);
 }
 
-unsigned int wfa_cap;
-module_param(wfa_cap, uint, 0);
-MODULE_PARM_DESC(wfa_cap, "set capability for WFA test");
+unsigned int wfa_cap_marl;
+module_param(wfa_cap_marl, uint, 0);
+MODULE_PARM_DESC(wfa_cap_marl, "set capability for WFA test");

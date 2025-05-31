@@ -43,9 +43,9 @@
 
 #define SPRD_SECTION_NUM	4
 
-unsigned int wfa_cap;
-module_param(wfa_cap, uint, 0644);
-MODULE_PARM_DESC(wfa_cap, "set capability for WFA test");
+unsigned int wfa_cap_2355;
+module_param(wfa_cap_2355, uint, 0644);
+MODULE_PARM_DESC(wfa_cap_2355, "set capability for WFA test");
 
 static const u16 CRC_table[] = {
 	0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00,
@@ -1617,9 +1617,9 @@ int sc2355_open_fw(struct sprd_priv *priv, struct sprd_vif *vif, u8 *mac_addr)
 		pr_err("%s, %d, mac_addr error!\n", __func__, __LINE__);
 
 	p->reserved = 0;
-	if (wfa_cap) {
-		p->reserved = wfa_cap;
-		wfa_cap = 0;
+	if (wfa_cap_2355) {
+		p->reserved = wfa_cap_2355;
+		wfa_cap_2355 = 0;
 	}
 
 	return send_cmd_recv_rsp(priv, msg, &vif->ctx_id, &rlen);

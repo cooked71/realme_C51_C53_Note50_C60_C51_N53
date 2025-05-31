@@ -742,7 +742,7 @@ out:
 #ifndef BITS_PER_LONG
 #define BITS_PER_LONG 64
 #endif
-unsigned long int_sqrt(unsigned long x)
+unsigned long int_sqrt_marl(unsigned long x)
 {
 	unsigned long op, res, one;
 	op = x;
@@ -853,8 +853,8 @@ void sprdwl_ftm_event_per_dest_res(struct sprdwl_priv *priv,
 		}
 		pow_rtt_time /= res->n_meas;
 		pow_rtt_distance /= res->n_meas;
-		sqrt_rtt_time = (u64)int_sqrt((unsigned long)pow_rtt_time);
-		sqrt_rtt_distance = (int)int_sqrt((unsigned long)pow_rtt_distance);
+		sqrt_rtt_time = (u64)int_sqrt_marl((unsigned long)pow_rtt_time);
+		sqrt_rtt_distance = (int)int_sqrt_marl((unsigned long)pow_rtt_distance);
 		kfree(rtt_time);
 		kfree(rtt_distance);
 	}
