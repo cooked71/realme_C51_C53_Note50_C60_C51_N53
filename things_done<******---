@@ -194,6 +194,182 @@ make[1]: Leaving directory '/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C5
 make: *** [Makefile:186: sub-make] Error 2
 
 
+after symbols fixup
+
+  LTO     vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux.kallsyms1
+ld.lld: error: undefined symbol: pmic_refout_update
+>>> referenced by nq-nci.c:1831 (../drivers/nfc/pn557/nq-nci.c:1831)
+>>>               vmlinux.o:(nqx_probe)
+>>> referenced by nq-nci.c:1951 (../drivers/nfc/pn557/nq-nci.c:1951)
+>>>               vmlinux.o:(nqx_remove)
+>>> referenced by nq-nci.c:1478 (../drivers/nfc/pn557/nq-nci.c:1478)
+>>>               vmlinux.o:(nfc_ioctl_power_states)
+>>> referenced 2 more times
+
+ld.lld: error: undefined symbol: tp_charge_status_switch
+>>> referenced by musb_sprd.c:0 (../drivers/usb/musb/musb_sprd.c:0)
+>>>               vmlinux.o:(musb_sprd_vbus_notifier)
+
+ld.lld: error: undefined symbol: tp_interface
+>>> referenced by focaltech_spi_v2.c:481 (../drivers/input/touchscreen/focaltech_spi/focaltech_spi_v2.c:481)
+>>>               vmlinux.o:(fts_ts_probe)
+>>> referenced by focaltech_spi_v2.c:481 (../drivers/input/touchscreen/focaltech_spi/focaltech_spi_v2.c:481)
+>>>               vmlinux.o:(fts_ts_probe)
+
+ld.lld: error: undefined symbol: touch_black_test
+>>> referenced by focaltech_test.c:2389 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:2389)
+>>>               vmlinux.o:(fts_self_test_spi)
+>>> referenced by focaltech_test.c:2389 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:2389)
+>>>               vmlinux.o:(fts_self_test_spi)
+>>> referenced by focaltech_test.c:2703 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:2703)
+>>>               vmlinux.o:(get_black_screentest_status_spi)
+>>> referenced 12 more times
+
+ld.lld: error: undefined symbol: tp_gesture
+>>> referenced by focaltech_test.c:0 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:0)
+>>>               vmlinux.o:(tp_gesture_write)
+>>> referenced by focaltech_test.c:0 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:0)
+>>>               vmlinux.o:(tp_gesture_write)
+
+ld.lld: error: undefined symbol: dvfs_core_init
+>>> referenced by sprd_ddr_dvfs_sp.c:217 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:217)
+>>>               vmlinux.o:(dvfs_probe)
+
+ld.lld: error: undefined symbol: dvfs_core_hw_callback_register
+>>> referenced by sprd_ddr_dvfs_sp.c:221 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:221)
+>>>               vmlinux.o:(dvfs_probe)
+
+ld.lld: error: undefined symbol: dvfs_core_hw_callback_clear
+>>> referenced by sprd_ddr_dvfs_sp.c:234 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:234)
+>>>               vmlinux.o:(dvfs_remove)
+
+ld.lld: error: undefined symbol: dvfs_core_clear
+>>> referenced by sprd_ddr_dvfs_sp.c:235 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:235)
+>>>               vmlinux.o:(dvfs_remove)
+
+ld.lld: error: undefined symbol: get_max_freq
+>>> referenced by sprd_ddr_dvfs_sp.c:80 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:80)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: get_min_freq
+>>> referenced by sprd_ddr_dvfs_sp.c:87 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:87)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: get_base_freq
+>>> referenced by sprd_ddr_dvfs_sp.c:88 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:88)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: send_vote_request
+>>> referenced by sprd_ddr_dvfs_sp.c:91 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:91)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: get_request_freq
+>>> referenced by sprd_governor_vote.c:89 (../drivers/devfreq/sprd/sprd_governor_vote.c:89)
+>>>               vmlinux.o:(scaling_request_ddr_freq_show)
+
+ld.lld: error: undefined symbol: send_freq_request
+>>> referenced by sprd_governor_vote.c:108 (../drivers/devfreq/sprd/sprd_governor_vote.c:108)
+>>>               vmlinux.o:(scaling_request_ddr_freq_store)
+make[1]: *** [/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C51_N53-AndroidU-kernel-source-master/Makefile:1207: vmlinux] Error 1
+make[1]: Leaving directory '/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C51_N53-AndroidU-kernel-source-master/out'
+make: *** [Makefile:186: sub-make] Error 2
+
+
+after M-ad drivers commit
+LTO     vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  LD      .tmp_vmlinux.kallsyms1
+ld.lld: error: undefined symbol: get_ishulk_10w
+>>> referenced by main.c:0 (../init/main.c:0)
+>>>               vmlinux.o:(cts_driver_init)
+
+ld.lld: error: undefined symbol: pmic_refout_update
+>>> referenced by nq-nci.c:1831 (../drivers/nfc/pn557/nq-nci.c:1831)
+>>>               vmlinux.o:(nqx_probe)
+>>> referenced by nq-nci.c:1951 (../drivers/nfc/pn557/nq-nci.c:1951)
+>>>               vmlinux.o:(nqx_remove)
+>>> referenced by nq-nci.c:1478 (../drivers/nfc/pn557/nq-nci.c:1478)
+>>>               vmlinux.o:(nfc_ioctl_power_states)
+>>> referenced 2 more times
+
+ld.lld: error: undefined symbol: tp_charge_status_switch
+>>> referenced by musb_sprd.c:0 (../drivers/usb/musb/musb_sprd.c:0)
+>>>               vmlinux.o:(musb_sprd_vbus_notifier)
+
+ld.lld: error: undefined symbol: tp_interface
+>>> referenced by focaltech_spi_v2.c:481 (../drivers/input/touchscreen/focaltech_spi/focaltech_spi_v2.c:481)
+>>>               vmlinux.o:(fts_ts_probe)
+>>> referenced by focaltech_spi_v2.c:481 (../drivers/input/touchscreen/focaltech_spi/focaltech_spi_v2.c:481)
+>>>               vmlinux.o:(fts_ts_probe)
+>>> referenced by cts_i2c_driver.c:486 (../drivers/input/touchscreen/chipone_icnl__9916c/cts_i2c_driver.c:486)
+>>>               vmlinux.o:(cts_driver_probe)
+>>> referenced 1 more times
+
+ld.lld: error: undefined symbol: touch_black_test
+>>> referenced by focaltech_test.c:2389 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:2389)
+>>>               vmlinux.o:(fts_self_test_spi)
+>>> referenced by focaltech_test.c:2389 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:2389)
+>>>               vmlinux.o:(fts_self_test_spi)
+>>> referenced by focaltech_test.c:2703 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:2703)
+>>>               vmlinux.o:(get_black_screentest_status_spi)
+>>> referenced 25 more times
+
+ld.lld: error: undefined symbol: tp_gesture
+>>> referenced by focaltech_test.c:0 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:0)
+>>>               vmlinux.o:(tp_gesture_write)
+>>> referenced by focaltech_test.c:0 (../drivers/input/touchscreen/focaltech_spi/focaltech_test.c:0)
+>>>               vmlinux.o:(tp_gesture_write)
+>>> referenced by cts_core.c:1970 (../drivers/input/touchscreen/chipone_icnl__9916c/cts_core.c:1970)
+>>>               vmlinux.o:(cts_suspend_device)
+>>> referenced 20 more times
+
+ld.lld: error: undefined symbol: dvfs_core_init
+>>> referenced by sprd_ddr_dvfs_sp.c:217 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:217)
+>>>               vmlinux.o:(dvfs_probe)
+
+ld.lld: error: undefined symbol: dvfs_core_hw_callback_register
+>>> referenced by sprd_ddr_dvfs_sp.c:221 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:221)
+>>>               vmlinux.o:(dvfs_probe)
+
+ld.lld: error: undefined symbol: dvfs_core_hw_callback_clear
+>>> referenced by sprd_ddr_dvfs_sp.c:234 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:234)
+>>>               vmlinux.o:(dvfs_remove)
+
+ld.lld: error: undefined symbol: dvfs_core_clear
+>>> referenced by sprd_ddr_dvfs_sp.c:235 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:235)
+>>>               vmlinux.o:(dvfs_remove)
+
+ld.lld: error: undefined symbol: get_max_freq
+>>> referenced by sprd_ddr_dvfs_sp.c:80 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:80)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: get_min_freq
+>>> referenced by sprd_ddr_dvfs_sp.c:87 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:87)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: get_base_freq
+>>> referenced by sprd_ddr_dvfs_sp.c:88 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:88)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: send_vote_request
+>>> referenced by sprd_ddr_dvfs_sp.c:91 (../drivers/devfreq/sprd/sprd_ddr_dvfs_sp.c:91)
+>>>               vmlinux.o:(check_and_vote)
+
+ld.lld: error: undefined symbol: get_request_freq
+>>> referenced by sprd_governor_vote.c:89 (../drivers/devfreq/sprd/sprd_governor_vote.c:89)
+>>>               vmlinux.o:(scaling_request_ddr_freq_show)
+
+ld.lld: error: undefined symbol: send_freq_request
+>>> referenced by sprd_governor_vote.c:108 (../drivers/devfreq/sprd/sprd_governor_vote.c:108)
+>>>               vmlinux.o:(scaling_request_ddr_freq_store)
+make[1]: *** [/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C51_N53-AndroidU-kernel-source-master/Makefile:1207: vmlinux] Error 1
+make[1]: Leaving directory '/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C51_N53-AndroidU-kernel-source-master/out'
+make: *** [Makefile:186: sub-make] Error 2
+
 
 
 
