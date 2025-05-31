@@ -417,7 +417,7 @@ static const struct file_operations fts_procta_fops = {
 };
 #endif
 
-int fts_create_apk_debug_channel(struct fts_ts_data *ts_data)
+int fts_create_apk_debug_channel_spi(struct fts_ts_data *ts_data)
 {
     struct ftxxxx_proc *proc = &ts_data->proc;
     proc->proc_entry = proc_create_data(PROC_NAME, 0777, NULL, &fts_proc_fops, ts_data);
@@ -437,7 +437,7 @@ int fts_create_apk_debug_channel(struct fts_ts_data *ts_data)
     return 0;
 }
 
-void fts_release_apk_debug_channel(struct fts_ts_data *ts_data)
+void fts_release_apk_debug_channel_spi(struct fts_ts_data *ts_data)
 {
     FTS_FUNC_ENTER();
     if (ts_data->proc.proc_entry)
@@ -1184,7 +1184,7 @@ static struct attribute_group fts_attribute_group = {
     .attrs = fts_attributes
 };
 
-int fts_create_sysfs(struct fts_ts_data *ts_data)
+int fts_create_sysfs_spi(struct fts_ts_data *ts_data)
 {
     int ret = 0;
 
@@ -1200,7 +1200,7 @@ int fts_create_sysfs(struct fts_ts_data *ts_data)
     return ret;
 }
 
-int fts_remove_sysfs(struct fts_ts_data *ts_data)
+int fts_remove_sysfs_spi(struct fts_ts_data *ts_data)
 {
     sysfs_remove_group(&ts_data->dev->kobj, &fts_attribute_group);
     return 0;

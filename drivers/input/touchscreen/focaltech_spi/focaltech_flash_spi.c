@@ -59,25 +59,25 @@ static char firmware_version[25] = {'H','U','L','K','_','L','C','E','_','H','K',
 /*****************************************************************************
 * Global variable or extern global variabls/functions
 *****************************************************************************/
-u8 fw_file[] = {
+u8 fw_file_spi[] = {
 #include FTS_UPGRADE_FW_FILE
 };
 
-u8 fw_file2[] = {
+u8 fw_file_spi2[] = {
 #include FTS_UPGRADE_FW2_FILE
 };
 
-u8 fw_file3[] = {
+u8 fw_file_spi3[] = {
 #include FTS_UPGRADE_FW3_FILE
 };
 
-struct upgrade_module module_list[] = {
-    {FTS_MODULE_ID, FTS_MODULE_NAME, fw_file, sizeof(fw_file)},
-    {FTS_MODULE2_ID, FTS_MODULE2_NAME, fw_file2, sizeof(fw_file2)},
-    {FTS_MODULE3_ID, FTS_MODULE3_NAME, fw_file3, sizeof(fw_file3)},
+struct upgrade_module module_list_spi[] = {
+    {FTS_MODULE_ID, FTS_MODULE_NAME, fw_file_spi, sizeof(fw_file_spi)},
+    {FTS_MODULE2_ID, FTS_MODULE2_NAME, fw_file_spi2, sizeof(fw_file_spi2)},
+    {FTS_MODULE3_ID, FTS_MODULE3_NAME, fw_file_spi3, sizeof(fw_file_spi3)},
 };
 
-struct upgrade_setting_nf upgrade_setting_list[] = {
+struct upgrade_setting_nf upgrade_setting_list_spi[] = {
     {0x87, 0x19, 0, (64 * 1024),  (128 * 1024), 0x00, 0x02, 8,  1, 1, 1, 0, 0},
     {0x86, 0x22, 0, (64 * 1024),  (128 * 1024), 0x00, 0x02, 8,  1, 1, 0, 0, 0},
     {0x87, 0x56, 0, (88 * 1024),  32766,        0xA5, 0x01, 8,  0, 2, 0, 1, 0},
@@ -97,14 +97,14 @@ struct upgrade_setting_nf upgrade_setting_list[] = {
     {0x80, 0xC7, 0, (84 * 1024),  (128 * 1024), 0xA5, 0x01, 8,  0, 2, 0, 1, 0},
 };
 
-struct fts_upgrade *fwupgrade;
+struct fts_upgrade *fwupgrade_spi;
 
 static int fts_check_bootid(void)
 {
     int ret = 0;
     u8 cmd = 0;
     u8 id[2] = { 0 };
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
     struct ft_chip_t *chip_id;
 
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -148,7 +148,7 @@ static int fts_enter_into_boot(void)
     u8 reg = FTS_REG_UPGRADE;
     int status = 0;
 
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     if (!upg || !upg->ts_data || !upg->setting_nf) {
         FTS_ERROR("upgrade/ts_data/setting_nf is null");
@@ -243,7 +243,7 @@ static int fts_dpram_write_pe(u32 saddr, const u8 *buf, u32 len, bool wpram)
     u32 packet_len = 0;
     u32 packet_size = FTS_FLASH_PACKET_LENGTH_SPI;
     bool fd_support = true;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("dpram write");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -330,7 +330,7 @@ static int fts_dpram_write(u32 saddr, const u8 *buf, u32 len, bool wpram)
     u32 packet_number = 0;
     u32 packet_len = 0;
     u32 packet_size = FTS_FLASH_PACKET_LENGTH_SPI;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("dpram write");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -406,7 +406,7 @@ static int fts_ecc_cal_tp(u32 ecc_saddr, u32 ecc_len, u16 *ecc_value)
     int i = 0;
     u8 cmd[FTS_ROMBOOT_CMD_ECC_NEW_LEN] = { 0 };
     u8 value[2] = { 0 };
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("ecc calc in tp");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -495,7 +495,7 @@ static int fts_ecc_check(const u8 *buf, u32 len, u32 ecc_saddr)
     int packet_remainder = 0;
     int offset = 0;
     u32 packet_size = FTS_MAX_LEN_FILE;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("ecc check");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -550,7 +550,7 @@ static int fts_pram_write_ecc(const u8 *buf, u32 len)
     u16 code_len = 0;
     u16 code_len_n = 0;
     u32 pram_start_addr = 0;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("begin to write pram app(bin len:%d)", len);
     if (!upg || !upg->setting_nf) {
@@ -601,7 +601,7 @@ static int fts_dram_write_ecc(const u8 *buf, u32 len)
     u16 const_len = 0;
     u16 const_len_n = 0;
     const u8 *dram_buf = NULL;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("begin to write dram data(bin len:%d)", len);
     if (!upg || !upg->setting_nf) {
@@ -671,7 +671,7 @@ static int fts_pram_start(void)
 static int fts_fw_write_start(const u8 *buf, u32 len, bool need_reset)
 {
     int ret = 0;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("begin to write and start fw(bin len:%d)", len);
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -722,7 +722,7 @@ static int fts_fw_download(const u8 *buf, u32 len, bool need_reset)
 {
     int ret = 0;
     int i = 0;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("fw upgrade download function");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -826,7 +826,7 @@ static int fts_read_file_request_firmware(char *file_name, u8 **file_buf)
     int ret = 0;
     const struct firmware *fw = NULL;
     char fwname[FILE_NAME_LENGTH] = { 0 };
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     snprintf(fwname, FILE_NAME_LENGTH, "%s", file_name);
     ret = request_firmware(&fw, fwname, upg->ts_data->dev);
@@ -876,12 +876,12 @@ static int fts_read_file(char *file_name, u8 **file_buf)
     return ret;
 }
 
-int fts_upgrade_bin(char *fw_name, bool force)
+int fts_upgrade_bin_spi(char *fw_name, bool force)
 {
     int ret = 0;
     u32 fw_file_len = 0;
     u8 *fw_file_buf = NULL;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("start upgrade with fw bin");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -919,13 +919,13 @@ err_bin:
 }
 
 
-int fts_enter_test_environment(bool test_state)
+int fts_enter_test_environment_spi(bool test_state)
 {
     int ret = 0;
     int i = 0;
     u8 detach_flag = 0;
     u32 app_offset = 0;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("fw test download function");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -973,7 +973,7 @@ int fts_enter_test_environment(bool test_state)
 static int fts_fw_resume(bool need_reset, enum FW_TYPE fw_type)
 {
     int ret = 0;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
     const struct firmware *fw = NULL;
     char fwname[FILE_NAME_LENGTH] = { 0 };
     bool get_fw_i_flag = true;
@@ -1082,12 +1082,12 @@ _release_firmware:
     return ret;
 }
 
-int fts_fw_recovery(void)
+int fts_fw_recovery_spi(void)
 {
     int ret = 0;
     u8 boot_state = 0;
     u8 chip_id = 0;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
     FTS_INFO("check if boot recovery");
     if (!upg || !upg->ts_data || !upg->setting_nf) {
@@ -1185,7 +1185,7 @@ int fts_enter_normal_fw(void)
 static int fts_fwupg_get_module_info(struct fts_upgrade *upg)
 {
     int i = 0;
-    struct upgrade_module *info = &module_list[0];
+    struct upgrade_module *info = &module_list_spi[0];
 
     if (!upg || !upg->ts_data) {
         FTS_ERROR("upg/ts_data is null");
@@ -1195,7 +1195,7 @@ static int fts_fwupg_get_module_info(struct fts_upgrade *upg)
     if (FTS_GET_MODULE_NUM > 1) {
         FTS_INFO("module id:%04x", upg->module_id);
         for (i = 0; i < FTS_GET_MODULE_NUM; i++) {
-            info = &module_list[i];
+            info = &module_list_spi[i];
             if (upg->module_id == info->id) {
                 FTS_INFO("module id match, get fw file successfully");
                 break;
@@ -1314,7 +1314,7 @@ static int fts_fwupg_get_fw_file(struct fts_upgrade *upg)
 }
 
 //xiazhiping@BSP.TP.Function add for hardinfo start
-void  get_tp_fw_ver(void)
+void  get_tp_fw_ver_spi(void)
 {
 
     u8 fwver = 0;
@@ -1335,7 +1335,7 @@ static void fts_fwupg_work(struct work_struct *work)
 {
     int ret = 0;
     u8 chip_id = 0;
-    struct fts_upgrade *upg = fwupgrade;
+    struct fts_upgrade *upg = fwupgrade_spi;
 
 #if !FTS_AUTO_UPGRADE_EN
     FTS_INFO("FTS_AUTO_UPGRADE_EN is disabled, not upgrade when power on");
@@ -1368,17 +1368,17 @@ static void fts_fwupg_work(struct work_struct *work)
         ret = fts_read_reg(FTS_REG_CHIP_ID, &chip_id);
         FTS_INFO("read chip id:0x%02x", chip_id);
 //xiazhiping@BSP.TP.Function add for hardinfo start
-        get_tp_fw_ver();
+        get_tp_fw_ver_spi();
 //xiazhiping@BSP.TP.Function add for hardinfo end
     }
 }
 
-int fts_fwupg_init(struct fts_ts_data *ts_data)
+int fts_fwupg_init_spi(struct fts_ts_data *ts_data)
 {
     int i = 0;
-    struct upgrade_setting_nf *setting = &upgrade_setting_list[0];
+    struct upgrade_setting_nf *setting = &upgrade_setting_list_spi[0];
     int setting_count =
-        sizeof(upgrade_setting_list) / sizeof(upgrade_setting_list[0]);
+        sizeof(upgrade_setting_list_spi) / sizeof(upgrade_setting_list_spi[0]);
 
     FTS_INFO("fw upgrade init function");
     if (!ts_data || !ts_data->ts_workqueue) {
@@ -1391,54 +1391,54 @@ int fts_fwupg_init(struct fts_ts_data *ts_data)
         return -ENODATA;
     }
 
-    fwupgrade = (struct fts_upgrade *)kzalloc(sizeof(*fwupgrade), GFP_KERNEL);
-    if (NULL == fwupgrade) {
+    fwupgrade_spi = (struct fts_upgrade *)kzalloc(sizeof(*fwupgrade_spi), GFP_KERNEL);
+    if (NULL == fwupgrade_spi) {
         FTS_ERROR("malloc memory for upgrade fail");
         return -ENOMEM;
     }
 
     if (1 == setting_count) {
-        fwupgrade->setting_nf = setting;
+        fwupgrade_spi->setting_nf = setting;
     } else {
         for (i = 0; i < setting_count; i++) {
-            setting = &upgrade_setting_list[i];
+            setting = &upgrade_setting_list_spi[i];
             if ((setting->rom_idh == ts_data->ic_info.ids.rom_idh)
                 && (setting->rom_idl == ts_data->ic_info.ids.rom_idl)) {
                 FTS_INFO("match upgrade setting,type(ID):0x%02x%02x",
                          setting->rom_idh, setting->rom_idl);
-                fwupgrade->setting_nf = setting;
+                fwupgrade_spi->setting_nf = setting;
             }
         }
     }
 
-    if (NULL == fwupgrade->setting_nf) {
+    if (NULL == fwupgrade_spi->setting_nf) {
         FTS_ERROR("no upgrade settings match, can't upgrade");
-        kfree(fwupgrade);
-        fwupgrade = NULL;
+        kfree(fwupgrade_spi);
+        fwupgrade_spi = NULL;
         return -ENODATA;
     }
 
     fts_esdcheck_switch(ts_data, DISABLE);
-    fwupgrade->ts_data = ts_data;
+    fwupgrade_spi->ts_data = ts_data;
     INIT_WORK(&ts_data->fwupg_work, fts_fwupg_work);
     queue_work(ts_data->ts_workqueue, &ts_data->fwupg_work);
 
     return 0;
 }
 
-int fts_fwupg_exit(struct fts_ts_data *ts_data)
+int fts_fwupg_exit_spi(struct fts_ts_data *ts_data)
 {
     FTS_FUNC_ENTER();
     cancel_work_sync(&ts_data->fwupg_work);
 
-    if (fwupgrade) {
-        if (fwupgrade->fw_from_request) {
-            vfree(fwupgrade->fw);
-            fwupgrade->fw = NULL;
+    if (fwupgrade_spi) {
+        if (fwupgrade_spi->fw_from_request) {
+            vfree(fwupgrade_spi->fw);
+            fwupgrade_spi->fw = NULL;
         }
 
-        kfree(fwupgrade);
-        fwupgrade = NULL;
+        kfree(fwupgrade_spi);
+        fwupgrade_spi = NULL;
     }
     FTS_FUNC_EXIT();
     return 0;

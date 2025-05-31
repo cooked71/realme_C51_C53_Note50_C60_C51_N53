@@ -67,7 +67,7 @@
 /*****************************************************************************
 * Global variable or extern global variabls/functions
 *****************************************************************************/
-struct fts_ts_data *fts_data;
+struct fts_ts_data *fts_data_spi;
 
 /*****************************************************************************
 * Static function prototypes
@@ -75,7 +75,7 @@ struct fts_ts_data *fts_data;
 int fts_ts_suspend(struct device *dev);
 int fts_ts_resume(struct device *dev);
 
-int fts_check_cid(struct fts_ts_data *ts_data, u8 id_h)
+int fts_check_cid_spi(struct fts_ts_data *ts_data, u8 id_h)
 {
     int i = 0;
     struct ft_chip_id_t *cid = &ts_data->ic_info.cid;
@@ -95,24 +95,24 @@ int fts_check_cid(struct fts_ts_data *ts_data, u8 id_h)
 }
 
 /*****************************************************************************
-*  Name: fts_wait_tp_to_valid
+*  Name: fts_wait_tp_to_valid_spi
 *  Brief: Read chip id until TP FW become valid(Timeout: TIMEOUT_READ_REG),
 *         need call when reset/power on/resume...
 *  Input:
 *  Output:
 *  Return: return 0 if tp valid, otherwise return error code
 *****************************************************************************/
-int fts_wait_tp_to_valid(int Step, int timeout)
+int fts_wait_tp_to_valid_spi(int Step, int timeout)
 {
     int ret = 0;
     int cnt = 0;
     u8 idh = 0;
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
     u8 chip_idh = ts_data->ic_info.ids.chip_idh;
 
     do {
         ret = fts_read_reg(FTS_REG_CHIP_ID, &idh);
-        if ((idh == chip_idh) || (fts_check_cid(ts_data, idh) == 0)) {
+        if ((idh == chip_idh) || (fts_check_cid_spi(ts_data, idh) == 0)) {
             FTS_INFO("TP Ready,Device ID:0x%02x", idh);
             return 0;
         } else
@@ -126,17 +126,17 @@ int fts_wait_tp_to_valid(int Step, int timeout)
 }
 
 /*****************************************************************************
-*  Name: fts_tp_state_recovery
+*  Name: fts_tp_state_recovery_spi
 *  Brief: Need execute this function when reset
 *  Input:
 *  Output:
 *  Return:
 *****************************************************************************/
-void fts_tp_state_recovery(struct fts_ts_data *ts_data)
+void fts_tp_state_recovery_spi(struct fts_ts_data *ts_data)
 {
     FTS_FUNC_ENTER();
     /* wait tp stable */
-    fts_wait_tp_to_valid(INTERVAL_READ_REG_RESUME, TIMEOUT_READ_REG);
+    fts_wait_tp_to_valid_spi(INTERVAL_READ_REG_RESUME, TIMEOUT_READ_REG);
     /* recover TP charger state 0x8B */
     /* recover TP glove state 0xC0 */
     /* recover TP cover state 0xC1 */
@@ -146,12 +146,12 @@ void fts_tp_state_recovery(struct fts_ts_data *ts_data)
     FTS_FUNC_EXIT();
 }
 
-int fts_reset_proc(int hdelayms)
+int fts_reset_proc_spi(int hdelayms)
 {
     FTS_DEBUG("tp reset");
-    gpio_direction_output(fts_data->pdata->reset_gpio, 0);
+    gpio_direction_output(fts_data_spi->pdata->reset_gpio, 0);
     msleep(1);
-    gpio_direction_output(fts_data->pdata->reset_gpio, 1);
+    gpio_direction_output(fts_data_spi->pdata->reset_gpio, 1);
     if (hdelayms) {
         msleep(hdelayms);
     }
@@ -159,46 +159,46 @@ int fts_reset_proc(int hdelayms)
     return 0;
 }
 
-void fts_irq_disable(void)
+void fts_irq_disable_spi(void)
 {
     unsigned long irqflags;
 
     FTS_FUNC_ENTER();
-    spin_lock_irqsave(&fts_data->irq_lock, irqflags);
+    spin_lock_irqsave(&fts_data_spi->irq_lock, irqflags);
 
-    if (!fts_data->irq_disabled) {
-        disable_irq_nosync(fts_data->irq);
-        fts_data->irq_disabled = true;
+    if (!fts_data_spi->irq_disabled) {
+        disable_irq_nosync(fts_data_spi->irq);
+        fts_data_spi->irq_disabled = true;
     }
 
-    spin_unlock_irqrestore(&fts_data->irq_lock, irqflags);
+    spin_unlock_irqrestore(&fts_data_spi->irq_lock, irqflags);
     FTS_FUNC_EXIT();
 }
 
-void fts_irq_enable(void)
+void fts_irq_enable_spi(void)
 {
     unsigned long irqflags = 0;
-	struct irq_desc *desc = irq_to_desc(fts_data->irq);
+	struct irq_desc *desc = irq_to_desc(fts_data_spi->irq);
 
     FTS_FUNC_ENTER();
 	FTS_DEBUG("irq_depth:%d\n, irq_status:%d\n", desc->depth);
-    spin_lock_irqsave(&fts_data->irq_lock, irqflags);
+    spin_lock_irqsave(&fts_data_spi->irq_lock, irqflags);
 
-    if ((desc->depth == 1) || (fts_data->irq_disabled)) {
-        enable_irq(fts_data->irq);
-        fts_data->irq_disabled = false;
+    if ((desc->depth == 1) || (fts_data_spi->irq_disabled)) {
+        enable_irq(fts_data_spi->irq);
+        fts_data_spi->irq_disabled = false;
     }
 
-    spin_unlock_irqrestore(&fts_data->irq_lock, irqflags);
+    spin_unlock_irqrestore(&fts_data_spi->irq_lock, irqflags);
     FTS_FUNC_EXIT();
 }
 
-void fts_hid2std(void)
+void fts_hid2std_spi(void)
 {
     int ret = 0;
     u8 buf[3] = {0xEB, 0xAA, 0x09};
 
-    if (fts_data->bus_type != BUS_TYPE_I2C)
+    if (fts_data_spi->bus_type != BUS_TYPE_I2C)
         return;
 
     ret = fts_write(buf, 3);
@@ -349,7 +349,7 @@ static int fts_get_ic_information(struct fts_ts_data *ts_data)
     ts_data->ic_info.hid_supported = FTS_HID_SUPPORTTED;
 
     for (cnt = 0; cnt < 3; cnt++) {
-        fts_reset_proc(0);
+        fts_reset_proc_spi(0);
         mdelay(FTS_CMD_START_DELAY + (cnt * 8));
 
         ret = fts_read_bootid(ts_data, &chip_id[0]);
@@ -408,9 +408,9 @@ static void fts_show_touch_buffer(u8 *data, u32 datalen)
     }
 }
 
-void fts_release_all_finger(void)
+void fts_release_all_finger_spi(void)
 {
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
     struct input_dev *input_dev = ts_data->input_dev;
 #if FTS_MT_PROTOCOL_B_EN
     u32 finger_count = 0;
@@ -691,7 +691,7 @@ static int fts_read_touchdata_spi(struct fts_ts_data *ts_data, u8 *buf)
 
     if (((0xEF == buf[1]) && (0xEF == buf[2]) && (0xEF == buf[3]))
         || ((ret < 0) && (0xEF == buf[0]))) {
-        fts_release_all_finger();
+        fts_release_all_finger_spi();
         /* check if need recovery fw */
         fts_fw_recovery();
         ts_data->fw_is_running = true;
@@ -1046,8 +1046,8 @@ static int fts_irq_read_report(struct fts_ts_data *ts_data)
         break;
 
     case TOUCH_FW_INIT:
-        fts_release_all_finger();
-        fts_tp_state_recovery(ts_data);
+        fts_release_all_finger_spi();
+        fts_tp_state_recovery_spi(ts_data);
         break;
 
     case TOUCH_IGNORE:
@@ -1064,7 +1064,7 @@ static int fts_irq_read_report(struct fts_ts_data *ts_data)
 
 static irqreturn_t fts_irq_handler(int irq, void *data)
 {
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
 #if defined(CONFIG_PM) && FTS_PATCH_COMERR_PM
     int ret = 0;
 
@@ -1726,7 +1726,7 @@ int fts_ts_suspend(struct device *dev)
 #if OPLUS_TEST
 	int status = 0;
 #endif
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
 
     FTS_FUNC_ENTER();
     if (ts_data->suspended) {
@@ -1747,7 +1747,7 @@ int fts_ts_suspend(struct device *dev)
     // WuXiaolong@BSP.TP 2024/1/26 Add for enter test/normal environment fail
     if (status) {
         FTS_INFO("status = %d fts_test_suspend\n",status);
-        fts_release_all_finger();
+        fts_release_all_finger_spi();
         ts_data->suspended = true;
         FTS_FUNC_EXIT();
         return 0;
@@ -1758,7 +1758,7 @@ int fts_ts_suspend(struct device *dev)
     if (ts_data->gesture_support) {
         fts_gesture_suspend(ts_data);
     } else {
-        fts_irq_disable();
+        fts_irq_disable_spi();
 
         FTS_INFO("make TP enter into sleep mode");
         ret = fts_write_reg(FTS_REG_POWER_MODE, FTS_REG_POWER_MODE_SLEEP);
@@ -1775,7 +1775,7 @@ int fts_ts_suspend(struct device *dev)
         }
     }
 
-    fts_release_all_finger();
+    fts_release_all_finger_spi();
     ts_data->suspended = true;
     FTS_FUNC_EXIT();
     return 0;
@@ -1784,7 +1784,7 @@ EXPORT_SYMBOL(fts_ts_suspend);
 
 int fts_ts_resume(struct device *dev)
 {
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
 
     FTS_FUNC_ENTER();
     if (!ts_data->suspended) {
@@ -1796,19 +1796,19 @@ int fts_ts_resume(struct device *dev)
     fts_release_all_finger();
 
 	if (!ts_data->gesture_support) {
-		fts_irq_enable();
+		fts_irq_enable_spi();
 	}
 
     if (!ts_data->ic_info.is_incell) {
 #if FTS_POWER_SOURCE_CUST_EN
         fts_power_source_resume(ts_data);
 #endif
-        fts_reset_proc(200);
+        fts_reset_proc_spi(200);
     }
 	
     fts_enter_normal_fw();
 
-    fts_wait_tp_to_valid(INTERVAL_READ_REG_RESUME, TIMEOUT_READ_REG);
+    fts_wait_tp_to_valid_spi(INTERVAL_READ_REG_RESUME, TIMEOUT_READ_REG);
     fts_ex_mode_recovery(ts_data);
 
     fts_esdcheck_resume(ts_data);
@@ -2036,7 +2036,7 @@ static int fts_notifier_callback_exit(struct fts_ts_data *ts_data)
 }*/
 
 
-int fts_ts_probe_entry(struct fts_ts_data *ts_data)
+int fts_ts_probe_entry_spi(struct fts_ts_data *ts_data)
 {
     int ret = 0;
 
@@ -2059,7 +2059,7 @@ int fts_ts_probe_entry(struct fts_ts_data *ts_data)
         FTS_ERROR("create fts workqueue fail");
     }
 
-    fts_data = ts_data;
+    fts_data_spi = ts_data;
     spin_lock_init(&ts_data->irq_lock);
     mutex_init(&ts_data->report_mutex);
     mutex_init(&ts_data->bus_lock);
@@ -2098,7 +2098,7 @@ int fts_ts_probe_entry(struct fts_ts_data *ts_data)
 #endif
 
 #if (!FTS_CHIP_IDC)
-    fts_reset_proc(200);
+    fts_reset_proc_spi(200);
 #endif
 
     ret = fts_get_ic_information(ts_data);
@@ -2204,10 +2204,10 @@ err_bus_init:
     return ret;
 }
 
-int fts_ts_remove_entry(struct fts_ts_data *ts_data)
+int fts_ts_remove_entry_spi(struct fts_ts_data *ts_data)
 {
     FTS_FUNC_ENTER();
-    cancel_work_sync(&fts_data->resume_work);
+    cancel_work_sync(&fts_data_spi->resume_work);
     fts_point_report_check_exit(ts_data);
     fts_release_apk_debug_channel(ts_data);
     fts_remove_sysfs(ts_data);

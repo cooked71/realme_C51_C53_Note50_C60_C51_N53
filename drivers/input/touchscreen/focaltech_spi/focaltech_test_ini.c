@@ -17,7 +17,7 @@
 *****************************************************************************/
 #define FTS_INI_REQUEST_SUPPORT              1
 
-struct ini_ic_type ic_types[] = {
+struct ini_ic_type ic_types_spi[] = {
     {"FT5X46",  0x54000002},
     {"FT5X46i", 0x54010002},
     {"FT5526",  0x54020002},
@@ -636,7 +636,7 @@ static int ini_get_string_value(char *section_name, char *key_name, char *rval)
     return ini_get_key(section_name, key_name, rval);
 }
 
-int get_keyword_value(char *section, char *name, int *value)
+int get_keyword_value_spi(char *section, char *name, int *value)
 {
     int ret = 0;
     char str[MAX_KEYWORD_VALUE_LEN] = { 0 };
@@ -814,7 +814,7 @@ static int init_node_valid(void)
             i = cnt / chy + 1;
             j = cnt % chy + 1;
             snprintf(str, MAX_KEYWORD_NAME_LEN, "InvalidNode[%d][%d]", i, j);
-            get_keyword_value("INVALID_NODE", str, &tdata->node_valid[cnt]);
+            get_keyword_value_spi("INVALID_NODE", str, &tdata->node_valid[cnt]);
         }
     }
 
@@ -827,7 +827,7 @@ static int init_node_valid(void)
             i = (cnt >= chy) ? 2 : 1;
             j = (cnt >= chy) ? (cnt - chy + 1) : (cnt + 1);
             snprintf(str, MAX_KEYWORD_NAME_LEN, "InvalidNodeS[%d][%d]", i, j);
-            get_keyword_value("INVALID_NODES", str, &tdata->node_valid_sc[cnt]);
+            get_keyword_value_spi("INVALID_NODES", str, &tdata->node_valid_sc[cnt]);
         }
     }
 
@@ -1314,12 +1314,12 @@ static u32 ini_get_ic_code(char *ic_name)
     int ic_types_len = 0;
 
     ini_icname_len = strlen(ic_name);
-    type_size = sizeof(ic_types) / sizeof(ic_types[0]);
+    type_size = sizeof(ic_types_spi) / sizeof(ic_types_spi[0]);
     for (i = 0; i < type_size; i++) {
         ic_types_len = strlen(ic_name);
         if (ini_icname_len == ic_types_len) {
-            if (0 == strncmp(ic_name, ic_types[i].ic_name, ic_types_len))
-                return ic_types[i].ic_type;
+            if (0 == strncmp(ic_name, ic_types_spi[i].ic_name, ic_types_len))
+                return ic_types_spi[i].ic_type;
         }
     }
 
@@ -1384,13 +1384,13 @@ static int ini_init_test(struct ini_data *ini)
 }
 
 /*
- * fts_test_get_testparam_from_ini - get test parameters from ini
+ * fts_test_get_testparam_from_ini_spi - get test parameters from ini
  *
  * read, parse the configuration file, initialize the test variable
  *
  * return 0 if succuss, else errro code
  */
-int fts_test_get_testparam_from_ini(char *config_name)
+int fts_test_get_testparam_from_ini_spi(char *config_name)
 {
     int ret = 0;
     struct ini_data *ini = &fts_ftest->ini;

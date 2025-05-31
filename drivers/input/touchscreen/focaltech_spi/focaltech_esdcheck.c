@@ -282,14 +282,14 @@ static void esdcheck_func(struct work_struct *work)
 }
 
 /*****************************************************************************
-*  Name: fts_esdcheck_proc_busy
+*  Name: fts_esdcheck_proc_busy_spi
 *  Brief: When APK or ADB command access TP via driver, then need set proc_debug,
 *         then will not check ESD.
 *  Input:
 *  Output:
 *  Return:
 *****************************************************************************/
-void fts_esdcheck_proc_busy(struct fts_ts_data *ts_data, bool proc_debug)
+void fts_esdcheck_proc_busy_spi(struct fts_ts_data *ts_data, bool proc_debug)
 {
     if (ts_data->esd_support) {
         fts_esdcheck_data.proc_debug = proc_debug;
@@ -297,14 +297,14 @@ void fts_esdcheck_proc_busy(struct fts_ts_data *ts_data, bool proc_debug)
 }
 
 /*****************************************************************************
-*  Name: fts_esdcheck_switch
+*  Name: fts_esdcheck_switch_spi
 *  Brief: FTS esd check function switch.
 *  Input:   enable:  1 - Enable esd check
 *                    0 - Disable esd check
 *  Output:
 *  Return:
 *****************************************************************************/
-void fts_esdcheck_switch(struct fts_ts_data *ts_data, bool enable)
+void fts_esdcheck_switch_spi(struct fts_ts_data *ts_data, bool enable)
 {
     if (ts_data->esd_support) {
         FTS_FUNC_ENTER();
@@ -329,11 +329,11 @@ void fts_esdcheck_switch(struct fts_ts_data *ts_data, bool enable)
     }
 }
 
-void fts_esdcheck_suspend(struct fts_ts_data *ts_data)
+void fts_esdcheck_suspend_spi(struct fts_ts_data *ts_data)
 {
     if (ts_data->esd_support) {
         FTS_FUNC_ENTER();
-        fts_esdcheck_switch(ts_data, DISABLE);
+        fts_esdcheck_switch_spi(ts_data, DISABLE);
         fts_esdcheck_data.suspend = 1;
         fts_esdcheck_data.intr = 0;
         fts_esdcheck_data.intr_cnt = 0;
@@ -341,11 +341,11 @@ void fts_esdcheck_suspend(struct fts_ts_data *ts_data)
     }
 }
 
-void fts_esdcheck_resume(struct fts_ts_data *ts_data)
+void fts_esdcheck_resume_spi(struct fts_ts_data *ts_data)
 {
     if (ts_data->esd_support) {
         FTS_FUNC_ENTER();
-        fts_esdcheck_switch(ts_data, ENABLE);
+        fts_esdcheck_switch_spi(ts_data, ENABLE);
         fts_esdcheck_data.suspend = 0;
         fts_esdcheck_data.intr = 0;
         fts_esdcheck_data.intr_cnt = 0;
@@ -364,10 +364,10 @@ static ssize_t fts_esdcheck_store(
     if (FTS_SYSFS_ECHO_ON(buf)) {
         FTS_DEBUG("enable esdcheck");
         ts_data->esd_support = ENABLE;
-        fts_esdcheck_switch(ts_data, ENABLE);
+        fts_esdcheck_switch_spi(ts_data, ENABLE);
     } else if (FTS_SYSFS_ECHO_OFF(buf)) {
         FTS_DEBUG("disable esdcheck");
-        fts_esdcheck_switch(ts_data, DISABLE);
+        fts_esdcheck_switch_spi(ts_data, DISABLE);
         ts_data->esd_support = DISABLE;
     }
     mutex_unlock(&input_dev->mutex);
@@ -425,7 +425,7 @@ bool fts_esd_is_disable(void)
     return fts_esdcheck_data.esd_is_disable;
 }
 
-int fts_esdcheck_init(struct fts_ts_data *ts_data)
+int fts_esdcheck_init_spi(struct fts_ts_data *ts_data)
 {
     FTS_FUNC_ENTER();
 
@@ -443,12 +443,12 @@ int fts_esdcheck_init(struct fts_ts_data *ts_data)
     fts_esdcheck_data.intr_cnt = 0;
     fts_create_esd_sysfs(ts_data->dev);
     ts_data->esd_support = FTS_ESDCHECK_EN;
-    fts_esdcheck_switch(ts_data, ENABLE);
+    fts_esdcheck_switch_spi(ts_data, ENABLE);
     FTS_FUNC_EXIT();
     return 0;
 }
 
-int fts_esdcheck_exit(struct fts_ts_data *ts_data)
+int fts_esdcheck_exit_spi(struct fts_ts_data *ts_data)
 {
     fts_esdcheck_data.mode = DISABLE;
     ts_data->esd_support = DISABLE;

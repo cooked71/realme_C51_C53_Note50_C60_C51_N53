@@ -84,13 +84,13 @@ static void fts_prc_func(struct work_struct *work)
 }
 
 /*****************************************************************************
-*  Name: fts_prc_queue_work
+*  Name: fts_prc_queue_work_spi
 *  Brief: fts point report check queue work, call it when interrupt comes
 *  Input:
 *  Output:
 *  Return:
 *****************************************************************************/
-void fts_prc_queue_work(struct fts_ts_data *ts_data)
+void fts_prc_queue_work_spi(struct fts_ts_data *ts_data)
 {
     if (ts_data->prc_support && !ts_data->prc_mode && !ts_data->suspended) {
         queue_delayed_work(ts_data->ts_workqueue, &ts_data->prc_work,
@@ -139,13 +139,13 @@ static ssize_t fts_prc_show(
 static DEVICE_ATTR(fts_prc, S_IRUGO | S_IWUSR, fts_prc_show, fts_prc_store);
 
 /*****************************************************************************
-*  Name: fts_point_report_check_init
+*  Name: fts_point_report_check_init_spi
 *  Brief:
 *  Input:
 *  Output:
 *  Return: < 0: Fail to create esd check queue
 *****************************************************************************/
-int fts_point_report_check_init(struct fts_ts_data *ts_data)
+int fts_point_report_check_init_spi(struct fts_ts_data *ts_data)
 {
     int ret = 0;
 
@@ -169,13 +169,13 @@ int fts_point_report_check_init(struct fts_ts_data *ts_data)
 }
 
 /*****************************************************************************
-*  Name: fts_point_report_check_exit
+*  Name: fts_point_report_check_exit_spi
 *  Brief:
 *  Input:
 *  Output:
 *  Return:
 *****************************************************************************/
-int fts_point_report_check_exit(struct fts_ts_data *ts_data)
+int fts_point_report_check_exit_spi(struct fts_ts_data *ts_data)
 {
     FTS_FUNC_ENTER();
     cancel_delayed_work_sync(&ts_data->prc_work);

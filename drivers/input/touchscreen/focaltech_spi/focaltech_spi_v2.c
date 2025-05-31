@@ -160,7 +160,7 @@ static int rdata_check(u8 *rdata, u32 rlen)
     return 0;
 }
 
-int fts_write(u8 *writebuf, u32 writelen)
+int fts_write_spi(u8 *writebuf, u32 writelen)
 {
     int ret = 0;
     int i = 0;
@@ -242,16 +242,16 @@ err_write:
     return ret;
 }
 
-int fts_write_reg(u8 addr, u8 value)
+int fts_write_reg_spi(u8 addr, u8 value)
 {
     u8 writebuf[2] = { 0 };
 
     writebuf[0] = addr;
     writebuf[1] = value;
-    return fts_write(writebuf, 2);
+    return fts_write_spi(writebuf, 2);
 }
 
-int fts_read(u8 *cmd, u32 cmdlen, u8 *data, u32 datalen)
+int fts_read_spi(u8 *cmd, u32 cmdlen, u8 *data, u32 datalen)
 {
     int ret = 0;
     int i = 0;
@@ -347,13 +347,13 @@ err_read:
     return ret;
 }
 
-int fts_read_reg(u8 addr, u8 *value)
+int fts_read_reg_spi(u8 addr, u8 *value)
 {
-    return fts_read(&addr, 1, value, 1);
+    return fts_read_spi(&addr, 1, value, 1);
 }
 
 
-int fts_bus_transfer_direct(u8 *writebuf, u32 writelen, u8 *readbuf, u32 readlen)
+int fts_bus_transfer_direct_spi(u8 *writebuf, u32 writelen, u8 *readbuf, u32 readlen)
 {
     int ret = 0;
     struct fts_ts_data *ts_data = fts_data;
@@ -419,7 +419,7 @@ err_spi_dir:
     return ret;
 }
 
-int fts_bus_configure(struct fts_ts_data *ts_data, u8 *buf, u32 size)
+int fts_bus_configure_spi(struct fts_ts_data *ts_data, u8 *buf, u32 size)
 {
     int ret = 0;
     FTS_FUNC_ENTER();

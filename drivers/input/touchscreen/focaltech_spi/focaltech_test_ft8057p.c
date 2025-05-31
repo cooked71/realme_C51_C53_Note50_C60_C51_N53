@@ -579,7 +579,7 @@ static int start_test_ft8057(void)
     return test_result;
 }
 
-struct test_funcs test_func_ft8057 = {
+struct test_funcs test_func_ft8057_spi = {
     .ctype = {0x28, 0x2B},
     .hwtype = IC_HW_INCELL,
     .key_num_total = 0,
