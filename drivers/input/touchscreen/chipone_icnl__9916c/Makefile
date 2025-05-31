@@ -1,5 +1,5 @@
 #obj-$(CONFIG_TOUCHSCREEN_CHIPONE) += chipone-tddi.o
-obj-m += chipone-tddi.o
+obj-y += chipone-tddi.o
 
 ifneq ($(filter userdebug, $(TARGET_BUILD_VARIANT)),)
     $(warning "===================== userdebug verison chipone_tp  ======================")

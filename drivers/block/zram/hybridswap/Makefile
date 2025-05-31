@@ -2,4 +2,4 @@
 
 hyb-y := zcomp.o zram_drv.o hybridmain.o hybridswapd.o hybridswap.o
 
-obj-m      +=      hyb.o
+obj-Y      +=      hyb.o
