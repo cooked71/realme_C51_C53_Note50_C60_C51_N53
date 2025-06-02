@@ -34,8 +34,8 @@
 /*****************************************************************************
 * Included header files
 *****************************************************************************/
-#include "focaltech_core.h"
-#include "../omnivision_tcm/touch.h"
+#include "/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C51_N53-AndroidU-kernel-source-master/drivers/input/touchscreen/focaltech_spi/focaltech_core.h"
+#include "/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C51_N53-AndroidU-kernel-source-master/drivers/input/touchscreen/omnivision_tcm/touch.h"
 
 extern struct touch_panel tp_interface;
 
@@ -77,7 +77,7 @@ static char lcd_name[100];
 static int fts_spi_transfer(u8 *tx_buf, u8 *rx_buf, u32 len)
 {
     int ret = 0;
-    struct spi_device *spi = fts_data->spi;
+    struct spi_device *spi = fts_data_spi->spi;
     struct spi_message msg;
     struct spi_transfer xfer = {
         .tx_buf = tx_buf,
@@ -164,7 +164,7 @@ int fts_write_spi(u8 *writebuf, u32 writelen)
 {
     int ret = 0;
     int i = 0;
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
     u8 *txbuf = NULL;
     u8 *rxbuf = NULL;
     u32 txlen = 0;
@@ -255,7 +255,7 @@ int fts_read_spi(u8 *cmd, u32 cmdlen, u8 *data, u32 datalen)
 {
     int ret = 0;
     int i = 0;
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
     u8 *txbuf = NULL;
     u8 *rxbuf = NULL;
     u32 txlen = 0;
@@ -356,7 +356,7 @@ int fts_read_reg_spi(u8 addr, u8 *value)
 int fts_bus_transfer_direct_spi(u8 *writebuf, u32 writelen, u8 *readbuf, u32 readlen)
 {
     int ret = 0;
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
     u8 *txbuf = NULL;
     u8 *rxbuf = NULL;
     bool read_cmd = (readbuf && readlen) ? 1 : 0;
@@ -470,7 +470,7 @@ static int fts_ts_probe(struct spi_device *spi)
     ts_data->dummy_byte = SPI_DUMMY_BYTE;
     spi_set_drvdata(spi, ts_data);
 
-    ret = fts_ts_probe_entry(ts_data);
+    ret = fts_ts_probe_entry_spi(ts_data);
     if (ret) {
         FTS_ERROR("Touch Screen(SPI BUS) driver probe fail");
         spi_set_drvdata(spi, NULL);

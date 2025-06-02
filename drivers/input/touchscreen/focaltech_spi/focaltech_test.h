@@ -732,6 +732,6 @@ printk("[TP][FTS_TS][TEST]%s:"fmt"\n",  __func__, ##args); \
 #endif
 #endif
 
-extern int get_black_screentest_status(void);
+extern int get_black_screentest_status_spi(void);
 extern int fts_test_init(struct fts_ts_data *ts_data);
 extern int fts_test_exit(struct fts_ts_data *ts_data);

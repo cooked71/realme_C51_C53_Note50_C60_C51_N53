@@ -1,2 +1,2 @@
-obj-m += mipi_driver.o
+obj-y += mipi_driver.o
 mipi_driver-objs := main.o

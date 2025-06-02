@@ -149,9 +149,9 @@ static int ps_enable_nodata(int en)
 
     FTS_DEBUG("[PROXIMITY]SENSOR_ENABLE value = %d", en);
     /* Enable proximity */
-    mutex_lock(&fts_data->input_dev->mutex);
+    mutex_lock(&fts_data_spi->input_dev->mutex);
     err = fts_enter_proximity_mode(en);
-    mutex_unlock(&fts_data->input_dev->mutex);
+    mutex_unlock(&fts_data_spi->input_dev->mutex);
     return err;
 }
 

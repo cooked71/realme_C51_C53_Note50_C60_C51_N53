@@ -349,7 +349,7 @@ static int fts_test_get_ini_via_request_firmware(struct ini_data *ini, char *fwn
 #if FTS_INI_REQUEST_SUPPORT
     int ret = 0;
     const struct firmware *fw = NULL;
-    struct device *dev = &fts_data->input_dev->dev;
+    struct device *dev = &fts_data_spi->input_dev->dev;
 
     ret = request_firmware(&fw, fwname, dev);
     if (0 == ret) {

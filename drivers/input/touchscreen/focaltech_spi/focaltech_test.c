@@ -2363,7 +2363,7 @@ static const struct file_operations fts_proccsv_fops = {
 int fts_self_test_spi(struct seq_file *s, void *v)
 {
     int ret = 0;
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
     struct input_dev *input_dev;
 
     if (ito_self_test_spi) {
@@ -2552,7 +2552,7 @@ int fts_rawdata_differ_spi(u8 raw_diff, char *buf)
 	int buffer_length = 0;
 	char *tmp_buf = NULL;
 	int *buffer = NULL;
-	struct input_dev *input_dev = fts_data->input_dev;
+	struct input_dev *input_dev = fts_data_spi->input_dev;
 
 	mutex_lock(&input_dev->mutex);
 	fts_irq_disable();
@@ -2777,8 +2777,8 @@ static int fts_proc_baseline_test_open(struct inode *inode, struct file *file)
 
 static int tp_gesture_read_func(struct seq_file *s, void *v)
 {
-    FTS_TEST_INFO("double tap enable is: %d\n", fts_data->gesture_support);
-    seq_printf(s, "%d\n", fts_data->gesture_support);
+    FTS_TEST_INFO("double tap enable is: %d\n", fts_data_spi->gesture_support);
+    seq_printf(s, "%d\n", fts_data_spi->gesture_support);
     return 0;
 }
 
@@ -2794,7 +2794,7 @@ static ssize_t tp_gesture_write(struct file *file, const char *buff,
 									size_t len, loff_t *pos)
 {
 	char buf[80] = {0};
-	struct input_dev *input_dev = fts_data->input_dev;
+	struct input_dev *input_dev = fts_data_spi->input_dev;
 
 	if (copy_from_user(buf, buff, len)) {
 		FTS_TEST_INFO("%s: read proc double_tap_enable error.\n", __func__);
@@ -2804,11 +2804,11 @@ static ssize_t tp_gesture_write(struct file *file, const char *buff,
 	mutex_lock(&input_dev->mutex);
 	if (buf[0] == '0') {
 		tp_gesture = 0;
-		fts_data->gesture_support = DISABLE;
+		fts_data_spi->gesture_support = DISABLE;
 		FTS_TEST_INFO("tp gesture write 0!\n");
 	} else if (buf[0] == '1') {
 		tp_gesture = 1;
-		fts_data->gesture_support = ENABLE;
+		fts_data_spi->gesture_support = ENABLE;
 		FTS_TEST_INFO("tp gesture write 1.\n");
 	}
 	mutex_unlock(&input_dev->mutex);
@@ -2845,12 +2845,12 @@ static const struct file_operations fts_black_screen_test_fops = {
 static int tp_charger_mode_read_func(struct seq_file *s, void *v)
 {
     u8 val = 0;
-    struct input_dev *input_dev = fts_data->input_dev;
+    struct input_dev *input_dev = fts_data_spi->input_dev;
 
     mutex_lock(&input_dev->mutex);
     fts_read_reg(FTS_REG_CHARGER_MODE_EN, &val);
     seq_printf(s, "Charger Mode:%s\n",
-               fts_data->charger_mode ? "On" : "Off");
+               fts_data_spi->charger_mode ? "On" : "Off");
     seq_printf(s, "Charger Reg(0x8B):%d\n", val);
     mutex_unlock(&input_dev->mutex);
 
@@ -2873,19 +2873,19 @@ static ssize_t tp_charger_mode_write(struct file *file, const char *buff,
         return -EFAULT;
     }
     if (FTS_SYSFS_ECHO_ON(buf)) {
-        if (!fts_data->charger_mode) {
+        if (!fts_data_spi->charger_mode) {
             ret = fts_ex_mode_switch(MODE_CHARGER, ENABLE);
             if (ret >= 0) {
                 FTS_TEST_INFO("enter charger mode");
-                fts_data->charger_mode = ENABLE;
+                fts_data_spi->charger_mode = ENABLE;
             }
         }
     } else if (FTS_SYSFS_ECHO_OFF(buf)) {
-        if (fts_data->charger_mode) {
+        if (fts_data_spi->charger_mode) {
             ret = fts_ex_mode_switch(MODE_CHARGER, DISABLE);
             if (ret >= 0) {
                 FTS_TEST_INFO("exit charger mode");
-                fts_data->charger_mode = DISABLE;
+                fts_data_spi->charger_mode = DISABLE;
             }
         }
     }
@@ -2904,12 +2904,12 @@ static const struct file_operations tp_charger_mode_proc_fops = {
 static int tp_headset_mode_read_func(struct seq_file *s, void *v)
 {
     u8 val = 0;
-    struct input_dev *input_dev = fts_data->input_dev;
+    struct input_dev *input_dev = fts_data_spi->input_dev;
 
     mutex_lock(&input_dev->mutex);
     fts_read_reg(FTS_REG_EARPHONE_MODE_EN, &val);
     seq_printf(s, "Headset Mode:%s\n",
-               fts_data->earphone_mode ? "On" : "Off");
+               fts_data_spi->earphone_mode ? "On" : "Off");
     seq_printf(s, "Headset Reg(0xC3):%d\n", val);
     mutex_unlock(&input_dev->mutex);
 
@@ -2932,19 +2932,19 @@ static ssize_t tp_headset_mode_write(struct file *file, const char *buff,
         return -EFAULT;
     }
     if (FTS_SYSFS_ECHO_ON(buf)) {
-        if (!fts_data->earphone_mode) {
+        if (!fts_data_spi->earphone_mode) {
             ret = fts_ex_mode_switch(MODE_EARPHONE, ENABLE);
             if (ret >= 0) {
                 FTS_TEST_INFO("enter headset mode");
-                fts_data->earphone_mode = ENABLE;
+                fts_data_spi->earphone_mode = ENABLE;
             }
         }
     } else if (FTS_SYSFS_ECHO_OFF(buf)) {
-        if (fts_data->earphone_mode) {
+        if (fts_data_spi->earphone_mode) {
             ret = fts_ex_mode_switch(MODE_EARPHONE, DISABLE);
             if (ret >= 0) {
                 FTS_TEST_INFO("exit headset mode");
-                fts_data->earphone_mode = DISABLE;
+                fts_data_spi->earphone_mode = DISABLE;
             }
         }
     }

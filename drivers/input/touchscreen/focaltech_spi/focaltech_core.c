@@ -140,9 +140,9 @@ void fts_tp_state_recovery_spi(struct fts_ts_data *ts_data)
     /* recover TP charger state 0x8B */
     /* recover TP glove state 0xC0 */
     /* recover TP cover state 0xC1 */
-    fts_ex_mode_recovery(ts_data);
+    fts_ex_mode_recovery_spi(ts_data);
     /* recover TP gesture state 0xD0 */
-    fts_gesture_recovery(ts_data);
+    fts_gesture_recovery_spi(ts_data);
     FTS_FUNC_EXIT();
 }
 
@@ -1809,7 +1809,7 @@ int fts_ts_resume(struct device *dev)
     fts_enter_normal_fw();
 
     fts_wait_tp_to_valid_spi(INTERVAL_READ_REG_RESUME, TIMEOUT_READ_REG);
-    fts_ex_mode_recovery(ts_data);
+    fts_ex_mode_recovery_spi(ts_data);
 
     fts_esdcheck_resume(ts_data);
 

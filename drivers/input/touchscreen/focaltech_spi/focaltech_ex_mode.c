@@ -32,7 +32,7 @@
 /*****************************************************************************
 * 1.Included header files
 *****************************************************************************/
-#include "focaltech_core.h"
+#include "/home/lucoz/kernel_test/realme_C51_C53_Note50_C60_C51_N53-AndroidU-kernel-source-master/drivers/input/touchscreen/focaltech_spi/focaltech_core.h"
 
 /*****************************************************************************
 * 2.Private constant and macro definitions using #define
@@ -116,7 +116,7 @@ void set_ft_tp_charger_state(int attached)
     ret = fts_ex_mode_switch(MODE_CHARGER, buf);
     if (ret)
         FTS_ERROR("Set failed %d", ret);
-    fts_data->charger_mode = attached;
+    fts_data_spi->charger_mode = attached;
 
 }
 EXPORT_SYMBOL(set_ft_tp_charger_state);
@@ -132,7 +132,7 @@ void set_ft_tp_headset_state( int attached)
 	ret = fts_ex_mode_switch(MODE_EARPHONE, buf);
     if (ret)
         FTS_ERROR("Set failed %d", ret);
-    fts_data->earphone_mode = attached;
+    fts_data_spi->earphone_mode = attached;
 
 }
 EXPORT_SYMBOL(set_ft_tp_headset_state);

@@ -1039,7 +1039,7 @@ static int fts_fw_resume(bool need_reset, enum FW_TYPE fw_type)
     }
 
     upg->ts_data->fw_loading = 1;
-    if (!fts_data->irq_disabled) {
+    if (!fts_data_spi->irq_disabled) {
         fts_irq_disable();
         irq_need_recovery = 1;
     }
@@ -1155,11 +1155,11 @@ int fts_enter_normal_fw(void)
 	int ret = 0;
     int cnt = 0;
     u8 idh = 0;
-    struct fts_ts_data *ts_data = fts_data;
+    struct fts_ts_data *ts_data = fts_data_spi;
     u8 chip_idh = ts_data->ic_info.ids.chip_idh;
 
     do {
-		if(fts_data->fw_loading) {
+		if(fts_data_spi->fw_loading) {
 			FTS_INFO("fw is loading, not download again");
         	return 0;
 		}
@@ -1174,7 +1174,7 @@ int fts_enter_normal_fw(void)
         msleep(10);
     } while (cnt < 5);
 	
-	if((cnt >= 5) && !fts_data->fw_loading) {
+	if((cnt >= 5) && !fts_data_spi->fw_loading) {
 		fts_fw_resume(true, FW_NORMAL);
 	}
 	

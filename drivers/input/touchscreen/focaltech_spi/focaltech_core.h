@@ -319,7 +319,7 @@ enum _ex_mode {
 /*****************************************************************************
 * Global variable or extern global variabls/functions
 *****************************************************************************/
-extern struct fts_ts_data *fts_data;
+extern struct fts_ts_data *fts_data_spi;
 
 
 /* communication interface */
@@ -330,13 +330,13 @@ int fts_write_reg(u8 addr, u8 value);
 int fts_bus_configure(struct fts_ts_data *ts_data, u8 *buf, u32 size);
 int fts_bus_transfer_direct(u8 *writebuf, u32 writelen, u8 *readbuf, u32 readlen);
 void fts_hid2std(void);
-int fts_ts_probe_entry(struct fts_ts_data *ts_data);
+int fts_ts_probe_entry_spi(struct fts_ts_data *ts_data);
 int fts_ts_remove_entry(struct fts_ts_data *ts_data);
 
 /* Gesture functions */
 int fts_gesture_init(struct fts_ts_data *ts_data);
 int fts_gesture_exit(struct fts_ts_data *ts_data);
-void fts_gesture_recovery(struct fts_ts_data *ts_data);
+void fts_gesture_recovery_spi(struct fts_ts_data *ts_data);
 int fts_gesture_readdata(struct fts_ts_data *ts_data, u8 *data);
 int fts_gesture_suspend(struct fts_ts_data *ts_data);
 int fts_gesture_resume(struct fts_ts_data *ts_data);
@@ -386,7 +386,7 @@ void fts_release_all_finger(void);
 void fts_tp_state_recovery(struct fts_ts_data *ts_data);
 int fts_ex_mode_init(struct fts_ts_data *ts_data);
 int fts_ex_mode_exit(struct fts_ts_data *ts_data);
-int fts_ex_mode_recovery(struct fts_ts_data *ts_data);
+int fts_ex_mode_recovery_spi(struct fts_ts_data *ts_data);
 
 void fts_irq_disable(void);
 void fts_irq_enable(void);
